@@ -2,7 +2,7 @@ import { motion } from 'framer-motion';
 
 const Tentang = () => {
   return (
-    <section id="tentang" className="mt-28 mb-10 scroll-mt-20">
+    <section id="tentang" className="mt-30 mb-10 scroll-mt-30">
       <div className="container mx-auto px-6">
         <motion.div
           initial={{ opacity: 0, y: 50 }}
