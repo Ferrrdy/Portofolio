@@ -22,7 +22,7 @@ const Beranda = () => {
               <a href="#project" className="bg-violet-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-violet-700 transition-colors flex items-center gap-2">
                 Lihat Proyek <RiArrowRightLine />
               </a>
-              <a href="/path-to-your-cv.pdf" download className="bg-zinc-700 text-white py-3 px-6 rounded-lg font-semibold hover:bg-zinc-600 transition-colors flex items-center gap-2">
+              <a href="../../public/assets/CV/CV FERDY ASHARI PUTRA.pdf" download className="bg-zinc-700 text-white py-3 px-6 rounded-lg font-semibold hover:bg-zinc-600 transition-colors flex items-center gap-2">
                 Download CV <RiDownloadFill />
               </a>
             </div>
