@@ -1,60 +1,128 @@
-import { motion } from 'framer-motion';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Pagination, A11y, EffectCoverflow } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/pagination';
+import 'swiper/css/effect-coverflow';
 import { listProyek } from '../data';
-import { RiGithubFill, RiShareBoxFill } from 'react-icons/ri';
 
-const Proyek = () => {
-  const cardVariants = {
-    hidden: { opacity: 0, y: 50 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
-  };
-
+const Project = () => {
   return (
-    <section id="project" className="py-24 scroll-mt-0">
-      <div className="container mx-auto px-6">
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          className="text-center max-w-2xl mx-auto"
+    <section id="projects" className="py-20 sm:py-24 mb-10">
+      {/* CSS Kustom untuk Paginasi */}
+      <style>{`
+        .swiper-pagination {
+          position: relative; /* Mengubah posisi agar bisa didorong ke bawah */
+          margin-top: 2rem; /* Menambah jarak dari atas, sesuaikan nilai ini jika perlu */
+        }
+        .swiper-pagination-bullet {
+          background: #fff; /* Mengubah warna titik menjadi putih */
+          opacity: 0.5;
+          width: 8px;
+          height: 8px;
+        }
+        .swiper-pagination-bullet-active {
+          opacity: 1;
+        }
+      `}</style>
+      
+      <div className="max-w-4xl mx-auto text-center mb-16 px-6">
+        <h2 className="text-5xl sm:text-5xl font-bold text-white">
+          My Projects
+        </h2>
+      </div>
+      
+      {/* PERBAIKAN: Bungkus Swiper dengan div yang memiliki padding horizontal */}
+      <div className="w-full px-4 sm:px-10">
+        <Swiper
+          modules={[Pagination, A11y, EffectCoverflow]}
+          effect={'coverflow'}
+          loop={true}
+          centeredSlides={true}
+          grabCursor={true}
+          
+          breakpoints={{
+            // Untuk layar mobile (default)
+            320: {
+              slidesPerView: 1,
+              spaceBetween: 20,
+              coverflowEffect: {
+                  rotate: 50,
+                  stretch: 0,
+                  depth: 100,
+                  modifier: 1,
+                  slideShadows: true,
+              },
+            },
+            // Untuk layar tablet
+            768: {
+              slidesPerView: 2,
+              spaceBetween: 30,
+              coverflowEffect: {
+                  rotate: 30,
+                  stretch: 0,
+                  depth: 150,
+                  modifier: 1,
+                  slideShadows: true,
+              },
+            },
+            // Untuk layar desktop
+            1024: {
+              slidesPerView: 3,
+              spaceBetween: 20, 
+              coverflowEffect: {
+                  rotate: 25,
+                  stretch: 0,
+                  depth: 100,
+                  modifier: 1,
+                  slideShadows: false,
+              },
+            },
+          }}
+          // -----------------------------
+          pagination={{ clickable: true }}
         >
-          <h2 className="text-3xl font-bold mb-4 text-white">Project Pilihan</h2>
-          <p className="text-base/loose text-zinc-400 mb-16">
-            Beberapa proyek pribadi dan klien yang pernah saya kerjakan. Setiap project adalah sebuah cerita tentang pemecahan masalah dan kreativitas.
-          </p>
-        </motion.div>
-
-        <div className="grid md:grid-cols-2 gap-8">
-          {listProyek.map(proyek => (
-            <motion.div
-              key={proyek.id}
-              variants={cardVariants}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              className="bg-zinc-800 rounded-xl overflow-hidden flex flex-col group"
-            >
-              <div className="overflow-hidden">
-                 <img src={proyek.gambar} alt={proyek.nama} className="w-full h-100 object-cover group-hover:scale-105 transition-transform duration-500" />
-              </div>
-
-              <div className="p-6 flex flex-col flex-grow">
-                <h3 className="text-xl font-bold text-white mb-2">{proyek.nama}</h3>
-                <p className="text-zinc-400 mb-4 flex-grow">{proyek.desk}</p>
+          {listProyek.map((project) => (
+            <SwiperSlide key={project.id}>
+              {/* Desain Kartu Proyek */}
+              <div className="bg-white rounded-xl shadow-lg overflow-hidden h-full flex flex-col transform transition-transform duration-300 hover:scale-105">
+                {/* Gambar Proyek */}
+                <div className="w-full h-48 bg-cover bg-center"
+                  style={{ backgroundImage: `url(${project.gambar})` }}
+                ></div>
                 
-                <div className="flex flex-wrap gap-2">
-                  {proyek.tools.map((tool, index) => (
-                    <span key={index} className="bg-zinc-700 text-violet-300 text-xs font-medium px-3 py-1 rounded-full">
-                      {tool}
-                    </span>
-                  ))}
+                {/* Konten Info Proyek */}
+                <div className="p-6 flex-grow flex flex-col">
+                  <h3 className="text-xl font-bold text-gray-900">{project.nama}</h3>
+                  <p className="mt-2 text-sm text-gray-600 flex-grow">{project.deskripsi}</p>
+                  
+                  {/* Teknologi */}
+                  <div className="mt-4 flex flex-wrap gap-2">
+                    {project.teknologi.map((tag) => (
+                      <span key={tag} className="bg-violet-900 text-white text-xs font-medium px-2.5 py-1 rounded-full">
+                          {tag}
+                      </span>
+                    ))}
+                  </div>
+
+                  {/* Tombol Aksi */}
+                  <div className="mt-6">
+                    <a 
+                      href={project.linkGithub} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="inline-block w-full text-center bg-gray-200 text-gray-800 px-4 py-2 rounded-lg text-sm font-semibold hover:bg-gray-300 transition-colors"
+                    >
+                      Detail
+                    </a>
+                  </div>
                 </div>
               </div>
-            </motion.div>
+            </SwiperSlide>
           ))}
-        </div>
+        </Swiper>
       </div>
     </section>
   );
 };
 
-export default Proyek;
+export default Project;
